@@ -1,0 +1,13 @@
+/** BODY tag will be the chrome extention view. */
+body{
+    width : 430px;
+    height : 550px;
+    background-image: url("../images/unnamed.gif");
+    background-repeat: repeat-y;
+}
+
+iframe{
+    width : 430px;
+    height : 550px;
+    border : 0px;
+}
