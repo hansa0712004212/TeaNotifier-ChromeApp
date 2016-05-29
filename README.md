@@ -1,8 +1,8 @@
 # TeaNotifier-ChromeApp
 Tea Notifier is my 1st Google Chrome extention. 
-The purpose of this extention is to display notification for company members to inform tea time and let them to choose their preferred drink type.  <br /><br />
+The purpose of this extention is to display notification for company members to inform tea time and let them to choose their preferred drink type.  <br />
 
-How to install.  <br /><br />
+How to install.  <br />
 
 Open Google Chrome.  <br />
 Click on, "Customize and control google chrome" icon in right hand side top corner.  <br />

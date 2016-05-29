@@ -59,14 +59,25 @@ var userEmail;
  */
 var ticker = function () {
     date = new Date();
-    hours = date.getHours();
-    minutes = date.getMinutes();
-    seconds = date.getSeconds();
-    if (hours === defaultEveningTHour
-            && minutes === defaultEveningTMinute
-            && seconds === 00) {
-        notify();
+    if (isWeekday()) {
+        hours = date.getHours();
+        minutes = date.getMinutes();
+        seconds = date.getSeconds();
+        if (hours === defaultEveningTHour
+                && minutes === defaultEveningTMinute
+                && seconds === 00) {
+            notify();
+        }
     }
+};
+
+/**
+ * Check whether today is a weekday.
+ * Assuming, Sunday is the start day of the week.
+ * @returns {Boolean}
+ */
+var isWeekday = function (){
+    return (date.getDay() > 0 && date.getDay() < 6);
 };
 
 /**
