@@ -63,8 +63,8 @@ var ticker = function () {
         hours = date.getHours();
         minutes = date.getMinutes();
         seconds = date.getSeconds();
-        if ((hours === defaultMorningTHour || hours === defaultEveningTHour)
-                && (minutes === defaultMorningTMinute || minutes === defaultEveningTMinute)
+        if ((hours === defaultMorningTHour && minutes === defaultMorningTMinute)
+                && (hours === defaultEveningTHour || minutes === defaultEveningTMinute)
                 && seconds === 00) {
             notify();
         }
