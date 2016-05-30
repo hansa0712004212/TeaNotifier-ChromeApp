@@ -30,7 +30,7 @@ var defaultEveningTMinute = 30;
  * Default text to speak out when notification pops up.
  * @type String
  */
-var defaultTTSText = "It is tea time. What is your choise ?";
+var defaultTTSText = "It is tea time. Select your choice ?";
 
 /**
  * Default text to speech language. 
@@ -60,11 +60,12 @@ var userEmail;
 var ticker = function () {
     date = new Date();
     if (isWeekday()) {
+        console.log(date.getSeconds());
         hours = date.getHours();
         minutes = date.getMinutes();
         seconds = date.getSeconds();
-        if ((hours === defaultMorningTHour && minutes === defaultMorningTMinute)
-                && (hours === defaultEveningTHour || minutes === defaultEveningTMinute)
+        if (((hours === defaultMorningTHour && minutes === defaultMorningTMinute)
+                || (hours === defaultEveningTHour && minutes === defaultEveningTMinute))
                 && seconds === 00) {
             notify();
         }
@@ -76,7 +77,7 @@ var ticker = function () {
  * Assuming, Sunday is the start day of the week.
  * @returns {Boolean}
  */
-var isWeekday = function (){
+var isWeekday = function () {
     return (date.getDay() > 0 && date.getDay() < 6);
 };
 
@@ -130,6 +131,7 @@ var notify = function () {
         alert('Desktop notifications not available in your browser.');
         return;
     }
+    console.log("awa");
 
     if (Notification.permission !== "granted") {
         Notification.requestPermission();
