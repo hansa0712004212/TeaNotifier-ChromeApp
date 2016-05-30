@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Typefi T Notifier",
     "description": "This extension will open up Typefi Tea Request Google spreadsheet",
-    "version": "0.5",
+    "version": "0.6",
     "icons":
             {
                 "16": "images/typefi16.png",

@@ -3,14 +3,14 @@
  * Value must be an integer between 0 - 11.
  * @type Number
  */
-var defaultMorningTHour = 10;
+var defaultMorningTHour = 9;
 
 /**
  * Set morning tea time default minute.
  * Value must be an integer between 0 - 59.
  * @type Number
  */
-var defaultMorningTMinute = 0;
+var defaultMorningTMinute = 55;
 
 /**
  * Set evening tea time default hour.
@@ -24,13 +24,25 @@ var defaultEveningTHour = 15;
  * Value must be an integer between 0 - 59.
  * @type Number
  */
-var defaultEveningTMinute = 30;
+var defaultEveningTMinute = 25;
 
 /**
- * Default text to speak out when notification pops up.
+ * No of minutes till tea ready.
  * @type String
  */
-var defaultTTSText = "It is tea time. Select your choice ?";
+var teaReadyDelay = 20;
+
+/**
+ * Default text to speak out when tea request notification pops up.
+ * @type String
+ */
+var defaultTTSTeaRequestText = "It is tea time. Select your choice ?";
+
+/**
+ * Default text to speak out when tea ready notification pops up.
+ * @type String
+ */
+var defaultTTSTeaReadyText = "Guys !!!, Tea ready.";
 
 /**
  * Default text to speech language. 
@@ -44,7 +56,7 @@ var defaultTTSLanguage = "en-IN";
  * 1.0 is any language default speed. 
  * @type Number
  */
-var defaultTTSSpeed = 0.8;
+var defaultTTSSpeed = 0.7;
 
 // Global variables
 var date;
@@ -52,6 +64,8 @@ var hours;
 var minutes;
 var seconds;
 var userEmail;
+var teaReadyHour = 0;
+var teaReadyMinute = 0;
 
 /**
  * Tick the time.
@@ -60,14 +74,17 @@ var userEmail;
 var ticker = function () {
     date = new Date();
     if (isWeekday()) {
-        console.log(date.getSeconds());
         hours = date.getHours();
         minutes = date.getMinutes();
         seconds = date.getSeconds();
         if (((hours === defaultMorningTHour && minutes === defaultMorningTMinute)
                 || (hours === defaultEveningTHour && minutes === defaultEveningTMinute))
                 && seconds === 00) {
-            notify();
+            notifyTeaRequest();
+            teaReady();
+        }
+        if (hours === teaReadyHour && minutes === teaReadyMinute && seconds === 0) {
+            notifyTeaReady();
         }
     }
 };
@@ -94,8 +111,9 @@ setInterval(ticker, 1000);
  * @param {type} function
  */
 document.addEventListener('DOMContentLoaded', function () {
-    if (Notification.permission !== "granted")
+    if (Notification.permission !== "granted") {
         Notification.requestPermission();
+    }
 });
 
 /**
@@ -115,6 +133,22 @@ var getUserEmailWithGreeting = function () {
 };
 
 /**
+ * Prepare tea ready notification.
+ * @returns {undefined}
+ */
+var teaReady = function () {
+    if (date.getHours() < 12) { // morning tea ready
+        teaReadyMinute = parseInt((defaultMorningTMinute + teaReadyDelay) % 60);
+        teaReadyHour = defaultMorningTHour
+                + parseInt((defaultMorningTMinute + teaReadyDelay) / 60);
+    } else { // evening tea ready
+        teaReadyMinute = parseInt((defaultEveningTMinute + teaReadyDelay) % 60);
+        teaReadyHour = defaultEveningTHour
+                + parseInt((defaultEveningTMinute + teaReadyDelay) / 60);
+    }
+};
+
+/**
  * Get current signed in user's email address.
  * @param {type} param
  */
@@ -126,12 +160,11 @@ chrome.identity.getProfileUserInfo(function (userInfo) {
  * Launch notification.
  * @returns {undefined}
  */
-var notify = function () {
+var notifyTeaRequest = function () {
     if (!Notification) {
         alert('Desktop notifications not available in your browser.');
         return;
     }
-    console.log("awa");
 
     if (Notification.permission !== "granted") {
         Notification.requestPermission();
@@ -140,31 +173,74 @@ var notify = function () {
         if (hours > 11) {
             notificationIcon = "images/eveningTea.png";
         }
-        playNotificationSound();
+        playTeaRequestSound();
         var notification = new Notification(getUserEmailWithGreeting(),
                 {icon: notificationIcon,
-                    body: defaultTTSText});
-        setTimeout(platTTS, 1000);
+                    body: defaultTTSTeaRequestText});
+        setTimeout(playTeaRequestTTS, 1000);
         notification.onclick = function () {
             window.open("https://goo.gl/ghM5Md");
+            notification.close();
+        };
+    }
+};
+
+var notifyTeaReady = function () {
+    if (!Notification) {
+        alert('Desktop notifications not available in your browser.');
+        return;
+    }
+
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+    } else {
+        var notificationIcon = "images/eveningTea.png";
+        if (hours > 11) {
+            notificationIcon = "images/morningTea.png";
+        }
+        playTeaReadySound();
+        var notification = new Notification(getUserEmailWithGreeting(),
+                {icon: notificationIcon,
+                    body: defaultTTSTeaReadyText});
+        setTimeout(playTeaReadyTTS, 3000);
+        notification.onclick = function () {
+            notification.close();
         };
     }
 };
 
 /**
- * run TTS.
+ * run tea request TTS.
  * @returns {undefined}
  */
-var platTTS = function () {
-    chrome.tts.speak(defaultTTSText,
+var playTeaRequestTTS = function () {
+    chrome.tts.speak(defaultTTSTeaRequestText,
             {'lang': defaultTTSLanguage, 'rate': defaultTTSSpeed});
 };
 
 /**
- * Play notification sound.
+ * run play tea ready TTS.
  * @returns {undefined}
  */
-var playNotificationSound = function () {
+var playTeaReadyTTS = function () {
+    chrome.tts.speak(defaultTTSTeaReadyText,
+            {'lang': defaultTTSLanguage, 'rate': defaultTTSSpeed});
+};
+
+/**
+ * Play tea request notification sound.
+ * @returns {undefined}
+ */
+var playTeaRequestSound = function () {
     var sound = new Audio('../sounds/popup.mp3');
+    sound.play();
+};
+
+/**
+ * Play tea ready notification sound.
+ * @returns {undefined}
+ */
+var playTeaReadySound = function () {
+    var sound = new Audio('../sounds/teaready.mp3');
     sound.play();
 };
