@@ -56,7 +56,13 @@ var defaultTTSLanguage = "en-IN";
  * 1.0 is any language default speed. 
  * @type Number
  */
-var defaultTTSSpeed = 0.7;
+var defaultTTSSpeed = 0.8;
+
+/**
+ * TTS voice gender.
+ * @type String
+ */
+var defaultTTSGender = "female";
 
 // Global variables
 var date;
@@ -77,12 +83,14 @@ var ticker = function () {
         hours = date.getHours();
         minutes = date.getMinutes();
         seconds = date.getSeconds();
-        if (((hours === defaultMorningTHour && minutes === defaultMorningTMinute)
-                || (hours === defaultEveningTHour && minutes === defaultEveningTMinute))
+        // check for tea time.
+        if (((hours === getMorningTeaHour() && minutes === getMorningTeaMinute())
+                || (hours === getEveningTeaHour() && minutes === getEveningTeaMinute()))
                 && seconds === 00) {
             notifyTeaRequest();
             teaReady();
         }
+        // check for tea ready time.
         if (hours === teaReadyHour && minutes === teaReadyMinute && seconds === 0) {
             notifyTeaReady();
         }
@@ -103,7 +111,9 @@ var isWeekday = function () {
  * @param {type} function to execute
  * @param {type} delay
  */
+setTimeout(loadDefaults, 1000);
 setInterval(ticker, 1000);
+
 
 /**
  * Request permission on page load.
@@ -138,13 +148,13 @@ var getUserEmailWithGreeting = function () {
  */
 var teaReady = function () {
     if (date.getHours() < 12) { // morning tea ready
-        teaReadyMinute = parseInt((defaultMorningTMinute + teaReadyDelay) % 60);
-        teaReadyHour = defaultMorningTHour
-                + parseInt((defaultMorningTMinute + teaReadyDelay) / 60);
+        teaReadyMinute = parseInt((getMorningTeaMinute() + getTeaReadyDelay()) % 60);
+        teaReadyHour = getMorningTeaHour()
+                + parseInt((getMorningTeaMinute() + getTeaReadyDelay()) / 60);
     } else { // evening tea ready
-        teaReadyMinute = parseInt((defaultEveningTMinute + teaReadyDelay) % 60);
-        teaReadyHour = defaultEveningTHour
-                + parseInt((defaultEveningTMinute + teaReadyDelay) / 60);
+        teaReadyMinute = parseInt((getEveningTeaMinute() + getTeaReadyDelay()) % 60);
+        teaReadyHour = getEveningTeaHour()
+                + parseInt((getEveningTeaMinute() + getTeaReadyDelay()) / 60);
     }
 };
 
@@ -176,7 +186,7 @@ var notifyTeaRequest = function () {
         playTeaRequestSound();
         var notification = new Notification(getUserEmailWithGreeting(),
                 {icon: notificationIcon,
-                    body: defaultTTSTeaRequestText});
+                    body: getTTSTeaRequestText()});
         setTimeout(playTeaRequestTTS, 1000);
         notification.onclick = function () {
             window.open("https://goo.gl/ghM5Md");
@@ -185,6 +195,10 @@ var notifyTeaRequest = function () {
     }
 };
 
+/**
+ * triggers when meets tea ready time.
+ * @returns {undefined}
+ */
 var notifyTeaReady = function () {
     if (!Notification) {
         alert('Desktop notifications not available in your browser.');
@@ -201,7 +215,7 @@ var notifyTeaReady = function () {
         playTeaReadySound();
         var notification = new Notification(getUserEmailWithGreeting(),
                 {icon: notificationIcon,
-                    body: defaultTTSTeaReadyText});
+                    body: getTTSTeaReadyText()});
         setTimeout(playTeaReadyTTS, 3000);
         notification.onclick = function () {
             notification.close();
@@ -214,8 +228,10 @@ var notifyTeaReady = function () {
  * @returns {undefined}
  */
 var playTeaRequestTTS = function () {
-    chrome.tts.speak(defaultTTSTeaRequestText,
-            {'lang': defaultTTSLanguage, 'rate': defaultTTSSpeed});
+    if (getSilentMode() === "false") {
+        chrome.tts.speak(getTTSTeaRequestText(),
+                {'lang': getTTSLanguage(), 'gender': getTTSGender(), 'rate': getTTSSpeed()});
+    }
 };
 
 /**
@@ -223,8 +239,10 @@ var playTeaRequestTTS = function () {
  * @returns {undefined}
  */
 var playTeaReadyTTS = function () {
-    chrome.tts.speak(defaultTTSTeaReadyText,
-            {'lang': defaultTTSLanguage, 'rate': defaultTTSSpeed});
+    if (getSilentMode() === "false") {
+        chrome.tts.speak(getTTSTeaReadyText(),
+                {'lang': getTTSLanguage(), 'gender': getTTSGender(), 'rate': getTTSSpeed()});
+    }
 };
 
 /**
@@ -232,8 +250,10 @@ var playTeaReadyTTS = function () {
  * @returns {undefined}
  */
 var playTeaRequestSound = function () {
-    var sound = new Audio('../sounds/popup.mp3');
-    sound.play();
+    if (getSilentMode() === "false") {
+        var sound = new Audio('../sounds/popup.mp3');
+        sound.play();
+    }
 };
 
 /**
@@ -241,6 +261,267 @@ var playTeaRequestSound = function () {
  * @returns {undefined}
  */
 var playTeaReadySound = function () {
-    var sound = new Audio('../sounds/teaready.mp3');
-    sound.play();
+    if (getSilentMode() === "false") {
+        var sound = new Audio('../sounds/teaready.mp3');
+        sound.play();
+    }
 };
+
+/**
+ * Get silent mode value.
+ * @returns {DOMString}
+ */
+var getSilentMode = function () {
+    if (localStorage.getItem('silent')) {
+        return localStorage.getItem('silent');
+    } else {
+        setSilentMode();
+    }
+};
+
+/**
+ * Get plain mode value.
+ * @returns {DOMString}
+ */
+var getPlainMode = function () {
+    if (localStorage.getItem('plain')) {
+        return localStorage.getItem('plain');
+    } else {
+        setPlainMode();
+    }
+};
+
+/**
+ * Get morning tea hour value.
+ * @returns {unresolved}
+ */
+var getMorningTeaHour = function () {
+    if (localStorage.getItem('morningTeaHour')) {
+        return parseInt(localStorage.getItem('morningTeaHour'));
+    } else {
+        setMorningTeaHour();
+    }
+};
+
+/**
+ * Get morning tea minute value.
+ * @returns {unresolved}
+ */
+var getMorningTeaMinute = function () {
+    if (localStorage.getItem('morningTeaMinute')) {
+        return parseInt(localStorage.getItem('morningTeaMinute'));
+    } else {
+        setMorningTeaMinute();
+    }
+};
+
+/**
+ * Get evening tea hour value.
+ * @returns {unresolved}
+ */
+var getEveningTeaHour = function () {
+    if (localStorage.getItem('eveningTeaHour')) {
+        return parseInt(localStorage.getItem('eveningTeaHour'));
+    } else {
+        setEveningTeaHour();
+    }
+};
+
+/**
+ * Get evening tea minute value.
+ * @returns {unresolved}
+ */
+var getEveningTeaMinute = function () {
+    if (localStorage.getItem('eveningTeaMinute')) {
+        return parseInt(localStorage.getItem('eveningTeaMinute'));
+    } else {
+        setEveningTeaMinute();
+    }
+};
+
+/**
+ * Get tts language value.
+ * @returns {DOMString}
+ */
+var getTTSLanguage = function () {
+    if (localStorage.getItem('ttsLanguage')) {
+        return localStorage.getItem('ttsLanguage');
+    } else {
+        setTTSLanguage();
+    }
+};
+
+/**
+ * Get tts speaking speed value.
+ * @returns {unresolved}
+ */
+var getTTSSpeed = function () {
+    if (localStorage.getItem('ttsSpeed')) {
+        return parseFloat(localStorage.getItem('ttsSpeed'));
+    } else {
+        setTTSSpeed();
+    }
+};
+
+/**
+ * Get tts gender value.
+ * @returns {DOMString}
+ */
+var getTTSGender = function () {
+    if (localStorage.getItem('ttsGender')) {
+        return localStorage.getItem('ttsGender');
+    } else {
+        setTTSGender();
+    }
+};
+
+/**
+ * Get tea request message value.
+ * @returns {DOMString}
+ */
+var getTTSTeaRequestText = function () {
+    if (localStorage.getItem('ttsTeaRequestText')) {
+        return localStorage.getItem('ttsTeaRequestText');
+    } else {
+        setTTSTeaRequestText();
+    }
+};
+
+/**
+ * Get tea ready message value.
+ * @returns {DOMString}
+ */
+var getTTSTeaReadyText = function () {
+    if (localStorage.getItem('ttsTeaReadyText')) {
+        return localStorage.getItem('ttsTeaReadyText');
+    } else {
+        setTTSTeaReadyText();
+    }
+};
+
+/**
+ * Get tea ready delay value.
+ * @returns {unresolved}
+ */
+var getTeaReadyDelay = function () {
+    if (localStorage.getItem('teaReadyDelay')) {
+        return parseInt(localStorage.getItem('teaReadyDelay'));
+    } else {
+        setTeaReadyDelay();
+    }
+};
+
+/**
+ * Set silent mode value.
+ * @returns {undefined}
+ */
+var setSilentMode = function () {
+    localStorage.setItem('silent', false);
+};
+
+/**
+ * Set plain mode value.
+ * @returns {undefined}
+ */
+var setPlainMode = function () {
+    localStorage.setItem('plain', false);
+};
+
+/**
+ * Set morning tea hour value.
+ * @returns {undefined}
+ */
+var setMorningTeaHour = function () {
+    localStorage.setItem('morningTeaHour', defaultMorningTHour);
+};
+
+/**
+ * Set morning tea minute value.
+ * @returns {undefined}
+ */
+var setMorningTeaMinute = function () {
+    localStorage.setItem('morningTeaMinute', defaultMorningTMinute);
+};
+
+/**
+ * Set evening tea hour value.
+ * @returns {undefined}
+ */
+var setEveningTeaHour = function () {
+    localStorage.setItem('eveningTeaHour', defaultEveningTHour);
+};
+
+/**
+ * Set evening tea minute value.
+ * @returns {undefined}
+ */
+var setEveningTeaMinute = function () {
+    localStorage.setItem('eveningTeaMinute', defaultEveningTMinute);
+};
+
+/**
+ * Set tts language value.
+ * @returns {undefined}
+ */
+var setTTSLanguage = function () {
+    localStorage.setItem('ttsLanguage', defaultTTSLanguage);
+};
+
+/**
+ * Set tts speaking speed value.
+ * @returns {undefined}
+ */
+var setTTSSpeed = function () {
+    localStorage.setItem('ttsSpeed', defaultTTSSpeed);
+};
+
+/**
+ * Set tts gender value.
+ * @returns {undefined}
+ */
+var setTTSGender = function () {
+    localStorage.setItem('ttsGender', defaultTTSGender);
+};
+
+/**
+ * Set tea request message value.
+ * @returns {undefined}
+ */
+var setTTSTeaRequestText = function () {
+    localStorage.setItem('ttsTeaRequestText', defaultTTSTeaRequestText);
+};
+
+/**
+ * Set tea ready message value.
+ * @returns {undefined}
+ */
+var setTTSTeaReadyText = function () {
+    localStorage.setItem('ttsTeaReadyText', defaultTTSTeaReadyText);
+};
+
+/**
+ * Set tea ready delay value.
+ * @returns {undefined}
+ */
+var setTeaReadyDelay = function () {
+    localStorage.setItem('teaReadyDelay', teaReadyDelay);
+};
+
+/**
+ * load defaults values for 1st ever run.
+ * @returns {undefined}
+ */
+function loadDefaults() {
+    getSilentMode();
+    getPlainMode();
+    getMorningTeaHour();
+    getMorningTeaMinute();
+    getEveningTeaHour();
+    getEveningTeaMinute();
+    getTTSLanguage();
+    getTTSSpeed();
+    getTTSGender();
+    getTTSTeaRequestText();
+    getTTSTeaReadyText();
+    getTeaReadyDelay();
+}

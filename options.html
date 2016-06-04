@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Typefi T Notifier - Options</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/options.css"/>
+        <script src="js/options.js"></script>
+    </head>
+    <body>
+        <!-- Chrome extention view. -->
+        <table>
+            <tr>
+                <td class="center-horizontal">
+                    <input type="checkbox" id="silent" name="silent" value="silent"> Silent Mode 
+                </td>
+                <td class="center-horizontal">
+                    <input type="checkbox" id="plain" name="plain" value="plain"> Plain Background 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Morning Tea Time 
+                </td>
+                <td>
+                    <input type="number" id="morningTeaHour" name="morningTeaHour" value=9 min=0 max=11 required> Hour 
+                    <input type="number" id="morningTeaMinute" name="morningTeaMinute" value=55 min=0 max=59 required> Minute 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Evening Tea Time 
+                </td>
+                <td>
+                    <input type="number" id="eveningTeaHour" name="eveningTeaHour" value="15" min=12 max=23 required> Hour 
+                    <input type="number" id="eveningTeaMinute" name="eveningTeaMinute" value="30" min=0 max=59 required> Minute 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Tea Prepare Delay 
+                </td>
+                <td>
+                    <select id="teaReadyDelay" name="teaReadyDelay">
+                        <option value="10"> 10 </option>
+                        <option value="15"> 15 </option>
+                        <option value="20" selected> 20 </option>
+                        <option value="25"> 25 </option>
+                        <option value="30"> 30 </option>
+                    </select> Minutes <label data-toggle="tooltip" title="Delay change will effect from next timer." class="red">*?</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label data-toggle="tooltip" title="Text To Speech">TTS</label> Language
+                </td>
+                <td>
+                    <select id="ttsLanguage" name="ttsLanguage">
+                        <option value="en-AU"> English - Australia </option>
+                        <option value="en-IE"> English - Ireland </option>
+                        <option value="en-IN" selected> English - India </option>
+                        <option value="en-GB"> English - Great Britain </option>
+                        <option value="en-US"> English - United States of America </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label data-toggle="tooltip" title="Text To Speech">TTS</label> Speed
+                </td>
+                <td>
+                    <select id="ttsSpeed" name="ttsSpeed">
+                        <option value="0.8" selected> Slow </option>
+                        <option value="1"> Neutral </option>
+                        <option value="1.2"> Fast </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label data-toggle="tooltip" title="Text To Speech">TTS</label> Voice Gender
+                </td>
+                <td>
+                    <select id="ttsGender" name="ttsGender">
+                        <option value="female" selected> Female </option>
+                        <option value="male"> Male </option>
+                    </select> &nbsp;<label data-toggle="tooltip" title="Some languages may not contain gender specific voice data." class="red"> *?</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Tea Request Text
+                </td>
+                <td>
+                    <input type="text" id="ttsTeaRequestText" name="ttsTeaRequestText" maxlength="50" required/> <label data-toggle="tooltip" title="Max length 50 characters only." class="red"> *?</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Tea Ready Text
+                </td>
+                <td>
+                    <input type="text" id="ttsTeaReadyText" name="ttsTeaReadyText" maxlength="50" required/> <label data-toggle="tooltip" title="Max length 50 characters only." class="red"> *?</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center-horizontal">
+                    <input type="button" id="uninstall" name="uninstall" value="  Uninstall  " class="btn btn-danger"/>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    <input type="button" id="reset" name="reset" value="  Reset  " class="btn btn-primary"/>
+                    <input type="button" id="close" name="close" value="  Close  " class="btn btn-warning"/>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

@@ -1,13 +1,38 @@
 /** BODY tag will be the chrome extention view. */
 body{
     width : 430px;
-    height : 550px;
+    height : 570px;
     background-size: 450px;
     background-repeat: repeat-y;
 }
 
 iframe{
     width : 430px;
-    height : 550px;
+    height : 570px;
     border : 0px;
+}
+
+table{
+    color:#ffffff;
+}
+
+button{
+    background-color: transparent;
+    cursor:pointer;
+    border: 0px solid black;
+    width: 40px;
+}
+
+img{
+    width: 40px;
+}
+
+button:focus {
+    outline:0;
+}
+
+.topcorner{
+    position:absolute;
+    top:8px;
+    right: 16px;
 }
