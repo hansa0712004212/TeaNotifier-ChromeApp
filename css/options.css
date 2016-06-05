@@ -73,3 +73,16 @@ input:valid {
 .red{
     color:red;
 }
+
+button{
+    background-color: transparent;
+    cursor:pointer;
+    border: 0px solid black;
+    width: 18px;
+    outline: 0;
+}
+
+img{
+    width: 16px;
+    outline: 0;
+}

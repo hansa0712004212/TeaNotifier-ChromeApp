@@ -165,42 +165,47 @@ window.onload = function () {
 
     /**
      * Get tts language value in chrome storage.
-     * @returns {undefined}
+     * @returns {DOMString}
      */
     var getTTSLanguage = function () {
         document.getElementById('ttsLanguage').value = localStorage.getItem('ttsLanguage');
+        return localStorage.getItem('ttsLanguage');
     };
 
     /**
      * Get tts speed value in chrome storage.
-     * @returns {undefined}
+     * @returns {Float}
      */
     var getTTSSpeed = function () {
         document.getElementById('ttsSpeed').value = localStorage.getItem('ttsSpeed');
+        return parseFloat(localStorage.getItem('ttsSpeed'));
     };
 
     /**
      * Get tts gender value in chrome storage.
-     * @returns {undefined}
+     * @returns {DOMString}
      */
     var getTTSGender = function () {
         document.getElementById('ttsGender').value = localStorage.getItem('ttsGender');
+        return localStorage.getItem('ttsGender');
     };
 
     /**
      * Get tea request message value in chrome storage.
-     * @returns {undefined}
+     * @returns {DOMString}
      */
     var getTTSTeaRequestText = function () {
         document.getElementById('ttsTeaRequestText').value = localStorage.getItem('ttsTeaRequestText');
+        return localStorage.getItem('ttsTeaRequestText');
     };
 
     /**
      * Get tea ready message value in chrome storage.
-     * @returns {undefined}
+     * @returns {DOMString}
      */
     var getTTSTeaReadyText = function () {
         document.getElementById('ttsTeaReadyText').value = localStorage.getItem('ttsTeaReadyText');
+        return localStorage.getItem('ttsTeaReadyText');
     };
 
     /**
@@ -225,6 +230,16 @@ window.onload = function () {
      */
     var goHome = function () {
         window.location.href = "popup.html";
+    };
+
+    var speakTestTReady = function () {
+        chrome.tts.speak(getTTSTeaReadyText(),
+                {'lang': getTTSLanguage(), 'gender': getTTSGender(), 'rate': getTTSSpeed()});
+    };
+
+    var speakTestTRequest = function () {
+        chrome.tts.speak(getTTSTeaRequestText(),
+                {'lang': getTTSLanguage(), 'gender': getTTSGender(), 'rate': getTTSSpeed()});
     };
 
     /**
@@ -275,6 +290,8 @@ window.onload = function () {
     document.getElementById('uninstall').onclick = uninstallMyself;
     document.getElementById('close').onclick = goHome;
     document.getElementById('reset').onclick = factoryReset;
+    document.getElementById('speakReady').onclick = speakTestTReady;
+    document.getElementById('speakRequest').onclick = speakTestTRequest;
     document.getElementById('morningTeaHour').onchange = setMorningTeaHour;
     document.getElementById('morningTeaMinute').onchange = setMorningTeaMinute;
     document.getElementById('eveningTeaHour').onchange = setEveningTeaHour;
