@@ -2,11 +2,11 @@
 <b>Tea Notifier is my 1st Google Chrome extention. 
 This extension is for Typefi Sri Lanka Team only. This extension will open up Typefi Tea Request Google spreadsheet. Extension version 1.0 . First stable release with new UI enhancements, options page and new images.</b><br />
 
-<b>Version 1.0.1 - Whats new :</b>
-Options page. Its user’s freedom to configure T notifications.
-Set silent mode. Set plain background.
-Set gender specific Text To Speech (TTS) service. 
-Please note that, Options are user specific only. Not global.<br/>
+<b>Version 1.0.1 - Whats new :</b><br />
+Options page. Its user’s freedom to configure T notifications.<br />
+Set silent mode. Set plain background.<br />
+Set gender specific Text To Speech (TTS) service.<br />
+Please note that, Options are user specific only. Not global.<br/><br />
 
 How to install.  <br />
 
