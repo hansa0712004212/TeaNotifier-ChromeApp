@@ -1,3 +1,5 @@
+/* global chrome */
+
 /**
  * when initialize options window.
  * @returns {undefined}
@@ -243,6 +245,34 @@ window.onload = function () {
     };
 
     /**
+     * This will save time changes globally.
+     * @returns void
+     */
+    var setGlobalTeaTime = function () {
+        var mth = document.getElementById('morningTeaHour').value;
+        var mtm = document.getElementById('morningTeaMinute').value;
+        var eth = document.getElementById('eveningTeaHour').value;
+        var etm = document.getElementById('eveningTeaMinute').value;
+        var delay = document.getElementById('teaReadyDelay').value;
+        var textBuild = "http://siyarasoliwood.com/hansTnotify/write.php"
+                + "?morningTeaHour=" + mth + "&morningTeaMinute=" + mtm
+                + "&eveningTeaHour=" + eth + "&eveningTeaMinute=" + etm
+                + "&teaReadyDelay=" + delay;
+
+        var request = new XMLHttpRequest();
+        // GET to httpbin which returns the GET data as JSON
+        request.open('GET', textBuild, true);
+        request.send();
+        displaySaveSuccessMessage();
+    };
+
+    var displaySaveSuccessMessage = function () {
+        date = new Date();
+        var minutesToNext = 59 - (date.getMinutes() % 59);
+        document.getElementById("minutesRemain").innerHTML = minutesToNext;
+    };
+
+    /**
      * Perform factory reset.
      * @returns {undefined}
      */
@@ -256,8 +286,8 @@ window.onload = function () {
         localStorage.setItem('ttsLanguage', "en-IN");
         localStorage.setItem('ttsSpeed', 0.8);
         localStorage.setItem('ttsGender', "female");
-        localStorage.setItem('ttsTeaRequestText', "It is tea time. Select your choice ?");
-        localStorage.setItem('ttsTeaReadyText', "Guys !!!, Tea ready.");
+        localStorage.setItem('ttsTeaRequestText', "Its tea time. Select your choice ?");
+        localStorage.setItem('ttsTeaReadyText', "Tea ready.");
         localStorage.setItem('teaReadyDelay', 20);
         loadData();
     };
@@ -302,4 +332,5 @@ window.onload = function () {
     document.getElementById('ttsTeaRequestText').onchange = setTTSTeaRequestText;
     document.getElementById('ttsTeaReadyText').onchange = setTTSTeaReadyText;
     document.getElementById('ttsGender').onchange = setTTSGender;
+    document.getElementById('save').onclick = setGlobalTeaTime;
 };

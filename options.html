@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Typefi T Notifier - Options</title>
+        <title>Hansa Tea Notifier - Options</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/options.css"/>
         <script src="js/options.js"></script>
     </head>
@@ -12,42 +12,66 @@
         <table>
             <tr>
                 <td class="center-horizontal">
-                    <input type="checkbox" id="silent" name="silent" value="silent"> Silent Mode 
+                    <input type="checkbox" id="silent" name="silent" value="silent"> Silent Mode
                 </td>
                 <td class="center-horizontal">
-                    <input type="checkbox" id="plain" name="plain" value="plain"> Plain Background 
+                    <input type="checkbox" id="plain" name="plain" value="plain"> Plain Background
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <hr/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    Morning Tea Time 
+                    <form id="teaSettingsForm">
+                        Morning Tea Time
                 </td>
                 <td>
-                    <input type="number" id="morningTeaHour" name="morningTeaHour" value=9 min=0 max=11 required> Hour 
-                    <input type="number" id="morningTeaMinute" name="morningTeaMinute" value=55 min=0 max=59 required> Minute 
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Evening Tea Time 
-                </td>
-                <td>
-                    <input type="number" id="eveningTeaHour" name="eveningTeaHour" value="15" min=12 max=23 required> Hour 
-                    <input type="number" id="eveningTeaMinute" name="eveningTeaMinute" value="30" min=0 max=59 required> Minute 
+                    <input type="number" id="morningTeaHour" name="morningTeaHour" value=9 min=0 max=11 required> Hour
+                    <input type="number" id="morningTeaMinute" name="morningTeaMinute" value=55 min=0 max=59 required> Minute
                 </td>
             </tr>
             <tr>
                 <td>
-                    Tea Prepare Delay 
+                    Evening Tea Time
                 </td>
                 <td>
-                    <select id="teaReadyDelay" name="teaReadyDelay">
+                    <input type="number" id="eveningTeaHour" name="eveningTeaHour" value="15" min=12 max=23 required> Hour
+                    <input type="number" id="eveningTeaMinute" name="eveningTeaMinute" value="30" min=0 max=59 required> Minute
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Tea Prepare Delay
+                </td>
+                <td>
+                    <select id="teaReadyDelay" name="teaReadyDelay" style="margin-top: 4px;">
                         <option value="10"> 10 </option>
                         <option value="15"> 15 </option>
-                        <option value="20" selected> 20 </option>
-                        <option value="25"> 25 </option>
+                        <option value="20"> 20 </option>
+                        <option value="25" selected> 25 </option>
                         <option value="30"> 30 </option>
                     </select> Minutes <label data-toggle="tooltip" title="Delay change will effect from next timer." class="red">*?</label>
+                    <!--input type="button" id="save" name="save" value="Save Global" class="btn btn-info" style="float: right"/-->
+                    <a class="btn btn-info" style="float: right" id="save" href="#popup1" name="save">Save Global</a>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <hr/>
+                    <div id='popup1' class='overlay'>
+                        <div class='popup'>
+                            <h2>Successful</h2>
+                            <a class='close' href='#'>&times;</a>
+                            <div class='content'>
+                                Global tea time changes has been saved successfully.
+                                Changes will be effective others after <b><div id="minutesRemain" class="inline"></div> minute(s)</b>.
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -96,7 +120,6 @@
                     <button type="button" id="speakRequest" name="speakRequest" title=" Test ">
                         <img alt=" Test " src="images/speak.png"/>
                     </button>&nbsp;
-                    <!--label data-toggle="tooltip" title="Max length 50 characters only." class="red"> *?</label-->
                 </td>
             </tr>
             <tr>
@@ -108,15 +131,14 @@
                     <button type="button" id="speakReady" name="speakReady" title=" Test ">
                         <img alt=" Test " src="images/speak.png"/>
                     </button>&nbsp;
-                    <!--label data-toggle="tooltip" title="Max length 50 characters only." class="red"> *?</label-->
                 </td>
             </tr>
             <tr>
                 <td colspan="2" class="center-horizontal">
-                    <input type="button" id="uninstall" name="uninstall" value="  Uninstall  " class="btn btn-danger"/>
-                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                    <input type="button" id="reset" name="reset" value="  Reset  " class="btn btn-primary"/>
-                    <input type="button" id="close" name="close" value="  Close  " class="btn btn-warning"/>
+                    <input type="button" id="uninstall" name="uninstall" value=" Remove " class="btn btn-danger"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="button" id="reset" name="reset" value=" Reset " class="btn btn-primary"/>
+                    <input type="button" id="close" name="close" value=" Close " class="btn btn-warning"/>
                 </td>
             </tr>
         </table>

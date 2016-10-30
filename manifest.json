@@ -1,14 +1,13 @@
 {
     "manifest_version": 2,
-    "name": "Typefi T Notifier",
-    "description": "This extension will open up Typefi Tea Request Google spreadsheet",
-    "version": "1.0.2",
+    "name": "Hansa Tea Notifier",
+    "description": "This extension will open up Tea Request Google spreadsheet",
+    "version": "2.0.0",
     "icons":
             {
-                "16": "images/typefi16.png",
-                "32": "images/typefi32.png",
-                "64": "images/typefi64.png",
-                "128": "images/typefi128.png"
+                "32": "images/hans32.png",
+                "64": "images/hans64.png",
+                "128": "images/hans128.png"
             },
     "homepage_url": "https://goo.gl/aQqX2b",
     "background":
@@ -17,13 +16,15 @@
                 "persistent": true
             },
     "browser_action": {
-        "default_icon": "images/typefi128.png",
+        "default_icon": "images/hans128.png",
         "default_popup": "popup.html",
-        "default_title": "Typefi T Notifier"
+        "default_title": "Hansa Tea Notifier"
     },
     "permissions": [
         "activeTab", "storage", "https://goo.gl/ghM5Md", "management",
-        "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css",
+        "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css",
+        "http://siyarasoliwood.com/hansTnotify/read.php",
+        "http://siyarasoliwood.com/hansTnotify/write.php",
         "alarms", "notifications", "identity", "identity.email", "tts"
     ],
     "options_page": "options.html",

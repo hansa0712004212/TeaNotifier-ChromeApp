@@ -1,6 +1,6 @@
 /**
  * when popup initialize.
- * @returns {undefined}
+ * @returns void
  */
 window.onload = function () {
     // check for preferred background.
