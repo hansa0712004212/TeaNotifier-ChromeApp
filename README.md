@@ -1,8 +1,20 @@
 # TeaNotifier-ChromeApp
-<b>Tea Notifier is my 1st Google Chrome extention. 
-This extension is for Typefi Sri Lanka Team only. This extension will open up Typefi Tea Request Google spreadsheet. Extension version 1.0 . First stable release with new UI enhancements, options page and new images.</b><br />
+<b>Hansa Tea Notifier is my 1st Google Chrome extention. 
+This extension will open up Tea Request Google spreadsheet. Extension version 2.0.0.</b><br /><br/>
 
-<b>Version 1.0.1 - Whats new :</b><br />
+<b>Whats New in 2.0.0</b><br />
+** Features **<br />
+* Tea time and tea make delay are now global. Once an user changed the time, other users' tea time plugin will be updated to new time. Time check triggers on 59th minute in every hour.<br />
+<br />
+** Bug fixes **<br />
+* Tea ready alarm triggers at 12am.<br />
+<br />
+** Updates **<br />
+* Product name changed.<br />
+* New icons.<br />
+* Visible and voice messages changed.<br />
+<br /><br />
+<b>Whats new in 1.0.1</b><br />
 Options page. Its user’s freedom to configure T notifications.<br />
 Set silent mode. Set plain background.<br />
 Set gender specific Text To Speech (TTS) service.<br />
